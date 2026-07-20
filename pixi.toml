@@ -33,6 +33,12 @@ lint = "ruff check ."
 site = "quarto render"
 
 # Render self-contained single-file HTML for Moodle upload.
-lms = "quarto render --profile lms"
+# Must go through publish.sh, NOT `quarto render --profile lms` directly:
+# the LMS build needs a post-processing pass to rewrite .qmd links to .html.
+# Calling quarto directly silently produces output with broken links.
+lms = "./scripts/publish.sh lms"
 
 preview = "quarto preview"
+
+# Verify every local link in both builds resolves. Render first.
+check-links = "./scripts/check-links.sh _site && ./scripts/check-links.sh _lms"

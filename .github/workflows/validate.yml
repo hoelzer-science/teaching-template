@@ -42,11 +42,12 @@ jobs:
       - name: Check internal links (site)
         run: ./scripts/check-links.sh _site
 
-      # The LMS build uses a different project type and is easy to break
-      # without noticing, since it is only looked at when publishing.
+      # Invoke the same pixi tasks a person would run locally. CI previously
+      # called publish.sh directly while `pixi run lms` called quarto directly,
+      # so a bug in the task definition passed CI and broke the real workflow.
       - name: Render and check LMS build
         run: |
-          ./scripts/publish.sh lms
+          pixi run lms
           ./scripts/check-links.sh _lms
 
       - name: Check that no solutions leaked into the build
