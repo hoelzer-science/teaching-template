@@ -22,6 +22,7 @@ project:
 
     # Always rendered: site-level pages.
     - "index.qmd"
+    - "guide.qmd"
     - "schedule.qmd"
 
     # Released sessions.
@@ -63,6 +64,8 @@ website:
     left:
       - href: index.qmd
         text: Home
+      - href: guide.qmd
+        text: How it works
       - href: schedule.qmd
         text: Schedule
       - text: Lectures

@@ -13,4 +13,6 @@ course:
   institution: "University of Applied Sciences Jena"
   instructor: "Martin Hölzer"
   contact: "hoelzer.martin@gmail.com"
+  # Kept for the record. Not rendered as a link anywhere -- guide.qmd refers to
+  # Moodle in plain text, so an unset value here cannot produce a broken link.
   lms-url: "TODO — Moodle course URL"
