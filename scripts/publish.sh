@@ -39,6 +39,25 @@ case "$target" in
   lms)
     echo "==> Rendering self-contained pages for Moodle"
     quarto render --profile lms
+
+    # Website projects rewrite internal .qmd links to .html; `default` projects
+    # do not, and the LMS profile has to use `default` to get embed-resources.
+    # So the links come out as href="...index.qmd" and 404. Fix them here.
+    # perl rather than sed: -i behaves differently on macOS and Linux.
+    # The [^":]* excludes absolute URLs, so only local links are touched.
+    echo "==> Rewriting internal .qmd links to .html"
+    find _lms -name '*.html' -print0 \
+      | xargs -0 perl -pi -e 's/(href="[^":]*)\.qmd(")/$1.html$2/g'
+
+    # `|| true` because grep exits 1 when it finds nothing, which is the
+    # success case here -- and `set -o pipefail` would otherwise abort.
+    remaining=$({ grep -rlE 'href="[^"]*\.qmd"' _lms 2>/dev/null || true; } | wc -l | tr -d ' ')
+    if [[ "$remaining" != "0" ]]; then
+      echo "WARNING: $remaining file(s) still contain .qmd links" >&2
+    else
+      echo "OK: no .qmd links remain"
+    fi
+
     echo
     echo "Standalone HTML files are in _lms/."
     echo "Notes, practicals and index pages embed their own images, CSS and JS,"

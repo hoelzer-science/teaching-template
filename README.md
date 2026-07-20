@@ -73,7 +73,12 @@ template.
 4. **Chalkboard and `embed-resources` are mutually exclusive.** Live annotation
    won; slides are delivered via the hosted site rather than as a single file.
 
-5. **bioconda has no Windows builds.** `pixi.toml` lists only macOS and Linux
+5. **Only website projects rewrite `.qmd` links to `.html`.** Because the LMS
+   profile must use `project.type: default` (see 2), every internal link came
+   out as `href="...index.qmd"` and 404'd. `scripts/publish.sh lms` rewrites
+   them as a post-processing step, and `scripts/check-links.sh` guards it.
+
+6. **bioconda has no Windows builds.** `pixi.toml` lists only macOS and Linux
    platforms. Students on Windows need WSL2 — plan the first practical session
    around this.
 

@@ -39,16 +39,28 @@ jobs:
       - name: Render site
         run: pixi run site
 
+      - name: Check internal links (site)
+        run: ./scripts/check-links.sh _site
+
+      # The LMS build uses a different project type and is easy to break
+      # without noticing, since it is only looked at when publishing.
+      - name: Render and check LMS build
+        run: |
+          ./scripts/publish.sh lms
+          ./scripts/check-links.sh _lms
+
       - name: Check that no solutions leaked into the build
         run: |
-          if grep -ril "reference solution" _site/ ; then
-            echo "::error::Solution content found in rendered site"
-            exit 1
-          fi
-          if find _site/ -path '*solution*' -print | grep -q . ; then
-            echo "::error::A path containing 'solution' was rendered into _site/"
-            exit 1
-          fi
+          for dir in _site _lms ; do
+            if grep -ril "reference solution" "$dir/" ; then
+              echo "::error::Solution content found in $dir/"
+              exit 1
+            fi
+            if find "$dir/" -path '*solution*' -print | grep -q . ; then
+              echo "::error::A path containing 'solution' was rendered into $dir/"
+              exit 1
+            fi
+          done
           echo "OK: no solution material in _site/"
 
       - name: Upload rendered site
