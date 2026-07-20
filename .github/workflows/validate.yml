@@ -66,8 +66,11 @@ jobs:
       - name: Check published output
         run: pixi run check-output
 
+      # v6+ runs on Node 24; v4 triggered the Node 20 deprecation warning.
+      # Must stay in the same generation as download-artifact in the deploy
+      # job below -- the artifact format is shared between them.
       - name: Upload rendered site
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: site
           path: _site/
@@ -86,7 +89,7 @@ jobs:
       # Deploy exactly the bytes that were validated, rather than re-rendering
       # and hoping the second render matches the first.
       - name: Download validated site
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: site
           path: _site
