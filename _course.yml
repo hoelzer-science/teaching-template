@@ -4,12 +4,12 @@
 
 course:
   title: "Bioinformatics"
-  code: "TODO"
+  code: "MT.1.257"
   semester: "Winter 2026/27"
   start-date: "2026-10-05"
   sws-lecture: 2
   sws-practical: 2
-  institution: "TODO — Hochschule"
-  instructor: "TODO"
-  contact: "TODO"
+  institution: "University of Applied Sciences Jena"
+  instructor: "Martin Hölzer"
+  contact: "hoelzer.martin@mgail.com"
   lms-url: "TODO — Moodle course URL"
