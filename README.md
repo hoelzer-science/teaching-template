@@ -1,4 +1,4 @@
-# teaching-template
+# Teaching Template
 
 Course infrastructure as code: Quarto + pixi + Git. One vertical slice
 (lecture 01 and practical 01) built end to end, to be extracted into a reusable
