@@ -219,6 +219,55 @@ overhead for a format most will not use.
 The `_lms` build is kept for two narrow cases: offline access, and an
 end-of-semester archive. It is not the primary channel.
 
+## Syncing changes with module repositories
+
+Each module is a **separate** repository created from this template ("Use this
+template"), so the module gets an *unrelated* git history — no shared commits.
+That rules out merge and rebase between the two, but `git cherry-pick` applies a
+commit's diff and does not need shared ancestry, so it works fine in both
+directions:
+
+- **template → module:** a template improvement you want an existing module to
+  pick up.
+- **module → template (the common case):** an infrastructure fix you made while
+  teaching, backported so future modules inherit it.
+
+One-time setup, from inside the template repo:
+
+```bash
+git remote add bioinformatics ~/git/bioinformatics   # adjust the path
+git fetch bioinformatics
+git log bioinformatics/main --oneline                # find the commit to take
+git cherry-pick <sha>
+pixi run check                                        # confirm it still builds
+```
+
+### The discipline that makes this painless
+
+**Keep infrastructure changes in their own commits, separate from content.** A
+commit that only touches `scripts/`, `.github/` or `styles/` cherry-picks
+cleanly. A commit that mixes a script fix with three new lecture slides drags
+course content into the template. In the module, commit infra alone, then
+content separately.
+
+What is safe to move, and what is not:
+
+| Backportable (infra) | Not backportable (content) |
+|---|---|
+| `scripts/`, `.github/`, `cloudflare/` | `lectures/*/`, `practicals/*/` material |
+| `styles/`, `404.html`, `guide.qmd` | `_course.yml` values, schedule entries |
+| `pixi.toml` tooling dependencies | session lists in the render allowlist |
+
+`_quarto.yml` is the one file mixing both — project config (infra) plus the
+navbar and render allowlist (content). Cherry-picks touching it may conflict;
+resolve by taking only the config change and keeping the module's own session
+list.
+
+This is the pragmatic middle between copying files by hand (loses history, easy
+to forget) and a shared Quarto extension (more machinery than the shared surface
+yet justifies — see "Not done yet"). Revisit the extension only once several
+modules exist and the backporting itself becomes the chore.
+
 ## Gotchas discovered while building this
 
 These cost time to find. They are the reason the slice was built before the
