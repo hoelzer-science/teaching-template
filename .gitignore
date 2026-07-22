@@ -42,4 +42,7 @@ docs/sessions/
 .DS_Store
 Thumbs.db
 
-**/*.quarto_ipynb
+# Quarto's intermediate notebooks. The trailing * matters: an interrupted or
+# concurrent render leaves numbered variants (notes.quarto_ipynb_1), which a
+# bare *.quarto_ipynb does not match, and they then show up as untracked.
+**/*.quarto_ipynb*
