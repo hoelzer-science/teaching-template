@@ -1,0 +1,47 @@
+# Quarto profile for previewing UNRELEASED sessions.
+#
+#   pixi run draft           build every session into _draft/
+#   pixi run draft-preview   the same, live-reloading, for designing a session
+#
+# The problem this solves: `project.render` in _quarto.yml is an allowlist, so
+# a session that has not been released does not render at all -- which is
+# exactly right for the published site, and useless while you are still writing
+# the session. This profile renders EVERYTHING, into a separate output
+# directory, so a lecture can be designed and looked at long before it is
+# published.
+#
+# WHY NOT just `quarto render lectures/02-sequencing/slides.qmd`:
+# naming a file that is not in the allowlist makes Quarto render it as a
+# STANDALONE document rather than as part of the project. Project-root-absolute
+# include paths then break -- `{{< include /shared/partials/poll.qmd >}}`
+# is resolved relative to the document and the render fails outright -- and
+# _course.yml metadata is not applied. Since every lecture includes the poll
+# partial, that mode cannot render a lecture of this course at all. Verified
+# 2026-07-26.
+#
+# WHY A SEPARATE output-dir, and this is the safety property that matters:
+# _draft/ is NOT _site/. Nothing here can reach the published site by accident,
+# because CI renders from a fresh checkout with the default profile and deploys
+# _site/ only. _draft/ is gitignored and never leaves the machine.
+#
+# So this profile does not weaken the release gate. Releasing a session is
+# still exactly one thing: uncommenting its lines in the _quarto.yml allowlist.
+# Check what is actually live with `pixi run status`, never with what you can
+# see in a draft build.
+
+project:
+  output-dir: _draft
+
+  # Replaces the allowlist in _quarto.yml rather than extending it.
+  # The exclusions mirror the ones in _quarto.yml, so a draft build shows the
+  # same "what would students see" as the real build -- solutions and
+  # instructor material stay out even here, where nothing is published.
+  render:
+    - "index.qmd"
+    - "guide.qmd"
+    - "schedule.qmd"
+    - "lectures/**/*.qmd"
+    - "practicals/**/*.qmd"
+    - "!instructor/**"
+    - "!**/solution/**"
+    - "!**/_*.qmd"

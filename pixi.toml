@@ -40,6 +40,17 @@ lms = "./scripts/publish.sh lms"
 
 preview = "quarto preview"
 
+# Design a session that is NOT yet released. The allowlist in _quarto.yml means
+# an unreleased session does not render at all, so there is nothing to look at
+# while writing it; these render EVERYTHING into _draft/ instead.
+#
+# _draft/ is local and gitignored and can never be published: CI renders from a
+# fresh checkout with the default profile and deploys _site/ only. Releasing a
+# session is still one deliberate act -- uncommenting it in the allowlist.
+# `pixi run status` is the answer to "what is actually live", not a draft build.
+draft = "quarto render --profile draft"
+draft-preview = "quarto preview --profile draft"
+
 # Which sessions are published, which are held back.
 status = "./scripts/release.sh status"
 

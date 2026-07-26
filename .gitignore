@@ -1,6 +1,9 @@
 # Generated output — never committed, always rebuilt.
 _site/
 _lms/
+# Draft build of UNRELEASED sessions (`pixi run draft`). Local only, and that
+# is the point: it must never be mistaken for, or deployed as, _site/.
+_draft/
 .quarto/
 *_files/
 
@@ -46,3 +49,5 @@ Thumbs.db
 # concurrent render leaves numbered variants (notes.quarto_ipynb_1), which a
 # bare *.quarto_ipynb does not match, and they then show up as untracked.
 **/*.quarto_ipynb*
+
+**/*.quarto_ipynb
