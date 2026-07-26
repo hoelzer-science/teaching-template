@@ -1,0 +1,59 @@
+<!--
+Shared partial: the live poll that opens every lecture.
+
+Included by the SLIDES of every lecture, and by nothing else. A poll is a
+classroom activity, not content, so it deliberately has no counterpart in the
+notes. The student-facing explanation of what polls are lives once in guide.qmd.
+
+Two poll addresses, and keeping them apart is the whole point of this file.
+The PARTICIPATION address is stable across lectures and semesters and lives in
+_course.yml; it pairs with the QR image, so if either changes, regenerate the
+other. The PRESENTER address changes per lecture and per semester, so each deck
+sets its own `poll-url:` in its YAML front matter and this partial reads it.
+Rollover is then one line per deck. A deck that forgets the line renders the
+shortcode name instead of a link -- visible immediately, not silently wrong.
+
+The three polls of a lecture are grouped into ONE Poll Everywhere activity,
+which is what makes a single presenter address per deck enough.
+
+The presenter link sits in SPEAKER NOTES on purpose: press S for the speaker
+view, where it is one click away on the lecturer's screen and not on the
+projector. It is not a secret -- speaker notes ship in the page source and the
+deck goes to Moodle -- but it is behind a Poll Everywhere login, so the worst a
+curious student reaches is a login form.
+
+CAUTION, learned here: a Quarto shortcode written inside an HTML comment is
+still EXPANDED, and the comment itself is passed through to the rendered page.
+So naming the metadata field in shortcode syntax above would print the actual
+presenter URL into the visible page source. Describe fields by name only.
+
+PATH CONVENTION: see /shared/partials/course-workflow.qmd. Project-root-absolute
+paths only.
+-->
+
+:::: {.columns}
+
+::: {.column width="35%"}
+![Poll Everywhere participation code.](/shared/figures/polleverywhere-qr.png){fig-alt="QR code linking to the poll participation page." width="280"}
+:::
+
+::: {.column width="65%"}
+### Join in
+
+Scan the code, or go to
+
+**[{{< meta polls.join-url >}}]({{< meta polls.join-url >}})**
+
+No account, no app, and answers are anonymous.
+
+The address is the **same every lecture** — bookmark it once.
+:::
+
+::::
+
+::: {.notes}
+[**Activate this lecture's polls**]({{< meta poll-url >}}){target="_blank"} —
+opens in a new tab. `target="_blank"` matters here: speaker view is its own
+window, and without it the click would navigate the speaker view away from the
+deck. Project the new tab, run the three polls, then come back.
+:::

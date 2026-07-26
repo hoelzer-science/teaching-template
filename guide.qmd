@@ -55,6 +55,19 @@ deck:
 3. Print with <kbd>Cmd</kbd>/<kbd>Ctrl</kbd> + <kbd>P</kbd> and choose
    **Save as PDF**.
 
+## Polls in the lecture
+
+Every lecture opens with a few short questions you answer live from your phone.
+They are not graded and they are not a test — they tell me what has landed and
+what needs another pass, which is only useful if you answer honestly.
+
+Go to **[{{< meta polls.join-url >}}]({{< meta polls.join-url >}})**, or scan
+the code shown on the slide. No account and no app are needed, answers are
+anonymous, and the address is the same in every lecture — bookmark it once.
+
+If you have no phone with you, just answer out loud; the polls are there to
+start a conversation, not to replace one.
+
 ## Notes
 
 Most lectures also have a **Notes** page. The slides are deliberately sparse —
