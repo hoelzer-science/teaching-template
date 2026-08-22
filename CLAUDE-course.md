@@ -280,7 +280,30 @@ with itself.
 ### Verification
 
 - **Prefer content whose correctness is testable.** Where a claim can be turned
-  into a runnable example, do that.
+  into a runnable example, do that. **The strongest form of this is to execute
+  the page**: a sibling project extracts every `bash` block from its pages *and
+  its slide deck* and runs them in order, in one shell, in a scratch directory —
+  and it caught two real bugs that reading could not, a GNU/BSD command
+  incompatibility and a CI-only failure. Prose about what a tool does cannot be
+  checked mechanically; a command can.
+  - **Budget the exclusions per page, not globally.** Some pages genuinely
+    cannot run in CI — one that installs software, say. A single flat cap forces
+    either a dishonest page or a meaningless limit; a per-page budget with a
+    comment saying what on *that* page cannot execute makes raising a number a
+    decision to justify in the same commit.
+  - **Say what the test tests, and let the page imply no more.** Output blocks
+    are usually *not* verified: an exact comparison fails on correct-but-machine-
+    specific things — home paths, column widths, locale sort order — and
+    loosening it until it passes leaves an assertion that asserts nothing.
+  - **A block passing in isolation does not prove it composes with what follows
+    it.** If blocks share a shell, a `cd` that never returns silently moves every
+    later relative path. The general form: **an example added to the middle of a
+    sequence is a change to everything after it.**
+- **A development machine tolerating something is not evidence that CI will.**
+  Apple's git silently invents an identity when `user.name` is unset and only
+  warns; Ubuntu's hard-fails. An example passed locally and failed on its first
+  real CI run for exactly that. Reproduce the isolated conditions locally
+  (`env -i HOME=… bash -c '…'`) before trusting a fix.
 - **Identifiers are checkable, so check them rather than recalling them.** One
   `curl` against a public API settles what memory only guesses.
 - **An external resource that reissues its records needs a PINNED version** if
@@ -305,6 +328,89 @@ with itself.
 - **Anything about an interactive web interface cannot be checked from a
   terminal** and must be tested by hand before it ships. When a claim cannot be
   executed, mark it as needing a human test rather than writing it as fact.
+
+## How a practical unit is built
+
+The model that survived a semester. `practicals/01-alignment/` is the worked
+example; its comments say why each piece is shaped the way it is.
+
+**Two different things get called "group". Name them apart**, in the material and
+in conversation:
+
+- a **cohort** — the students attending on alternating weeks. A *scheduling*
+  construct.
+- a **team** — the two or three who work together on their own data. The
+  *working* unit.
+
+**Teams of two, three by exception.** The university's recommendation for a
+computer-room course, and the reason is the machine: at one keyboard, three means
+one person watching.
+
+### Cohort-independence: three rules
+
+If the practical runs twice on alternating weeks, everything must hold for both:
+
+1. **Never reference time, only session numbers.** No "last week's lecture" — it
+   is true for one cohort and false for the other. Write "L4 covered this".
+2. **State the prerequisites explicitly** in each unit, against the state of the
+   **earlier** cohort — the minimum, never the average.
+3. **No shared mutable state.** Pre-staged material is read-only and installed
+   once; everything a team writes lives in the team's own repository. Then
+   "runs twice" needs no reset ritual.
+
+Per-team data is not only for variety: it is what makes running the same session
+twice **safe**, because the later cohort cannot read the earlier one's answers.
+
+### Shape of a session
+
+**Five slides, then the terminal** — where we are, today's question in the case
+study's terms, what you will produce, what this assumes, logistics. About five
+minutes. The rest of the introduction is a **live demonstration**, not slides.
+
+### The three layers
+
+Every unit has the same three, and this is what keeps a tool-driven practical
+anchored to something verifiable:
+
+| Layer | What it is | Where it is checked |
+|---|---|---|
+| **Do** | run the tools on the data | the artefacts exist |
+| **Compute** | a small programming task | **`pixi run test`** |
+| **Interrogate** | a question whose answer needs *looking* | the write-up |
+
+- **The Compute layer is started in the session and finished outside it**, said
+  through `shared/partials/compute-layer.qmd` — identical wording in every unit,
+  because students meet it once per session and it must read as one rule. **The
+  heading carries the timing too**, because a student reading top to bottom reads
+  headings, not callouts.
+- **Do not reorder Compute and Interrogate to put the overflowing part last.** It
+  is tempting, and the data dependency usually forbids it: Interrogate is
+  routinely answered with numbers Compute produces. Check before assuming either
+  way. What Interrogate must get *in the session* is being **read** — it says what
+  to look at while the data is still on screen.
+- **The Interrogate layer needs obstacles to exist.** If obstacles are an assessed
+  part of the write-up, a unit that runs smoothly gives students nothing to
+  report. **Design at least one place per unit where the obvious approach is
+  ambiguous, fails, or depends on a parameter choice.**
+- **Every unit ends with tools and further reading** — the manual or repository
+  **first**, the paper second. Manual first is the whole point: *always check the
+  tool's manual* is the transferable habit. Say when a tool has no paper. Use
+  DOIs, not journal URLs — `check-links.sh` verifies only *local* links, so a
+  rotted URL is not caught by CI.
+- **Name the artefacts each unit expects committed**, with full paths, so "look at
+  the repository" has something concrete to look at.
+
+### State the assessment in the FIRST session, and build it into the repository
+
+Two of the things typically assessed **cannot be reconstructed at the end**: a
+record of obstacles (nobody remembers in January which parameter they guessed in
+November) and a screenshot of something interesting (recovering it means
+re-running the analysis). Telling students in the closing session what they should
+have been collecting since the first is not an assessment, it is a trap.
+
+**Implement it structurally, not as an instruction.** Prose in the first session
+is forgotten by the third; a file with empty headings sitting in the repository is
+not. See `instructor/team-repos/README.md`.
 
 ## Known constraints
 
