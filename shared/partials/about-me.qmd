@@ -1,0 +1,24 @@
+<!--
+Shared partial: the "about me" slide for the first lecture of any module.
+
+Included by lectures/<first>/slides.qmd. It exists as a partial for the same
+reason the poll does: every module needs it, and a bio written per module goes
+stale in all of them at once.
+
+THE RULE IT ENCODES, which is the part worth keeping if the slide is redesigned:
+the slide shows a career timeline and then POINTS AT THE HUB. It does not carry a
+prose bio. Cross-module content about the teaching lives on the hub, in one
+place; anything copied per module drifts, because cherry-pick syncs
+infrastructure and not content.
+
+ROLLOVER SAFETY: nothing here names a term, a cohort or a date, so it needs no
+edit between semesters. The timeline figure only changes when a career does.
+
+PATH CONVENTION: see /shared/partials/poll.qmd. Project-root-absolute paths only.
+-->
+
+## About me
+
+![Own figure.](/shared/figures/martin-timeline.webp){fig-alt="A horizontal career timeline. 2007: Bioinformatics studies, Friedrich Schiller University Jena. 2012: Diploma with Prof. Sebastian Böcker on computational mass spectrometry. 2013: PhD student with Prof. Manja Marz, RNA Bioinformatics and High-Throughput Analysis. 2017: Postdoc, thesis 'The Dark Art of Next-Generation Sequencing'. 2018: Team leader, hoelzer-lab.github.io. 2019: Co-founder of nanozoo, bioinformatics and cloud computing; visiting researcher with Dr. Rob Finn at the European Bioinformatics Institute, UK. 2020: Researcher and team lead, Genome Competence Center, 'Bioinformatics and Translational Research'."}
+
+More about me and my background &rarr; [teaching.hoelzer.science/about](https://teaching.hoelzer.science/about)

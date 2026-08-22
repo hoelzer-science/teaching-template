@@ -28,6 +28,8 @@ format:
 poll-url: "https://www.polleverywhere.com/TODO-this-lecture"
 ---
 
+{{< include /shared/partials/about-me.qmd >}}
+
 ## Before we start {.smaller}
 
 {{< include /shared/partials/poll.qmd >}}
