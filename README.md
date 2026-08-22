@@ -7,14 +7,22 @@ template once it has survived a real semester.
 ## Quick start
 
 ```bash
-pixi install          # environment, incl. bioconda CLI tools
-pixi run preview      # live-reloading site at localhost:4200
-pixi run test         # run practical solutions against their tests
-pixi run site         # render the website into _site/
-pixi run lms          # render self-contained pages into _lms/
-pixi run status       # which sessions are published, which are held back
-pixi run check        # verify links and published output
+pixi install            # environment, incl. bioconda CLI tools
+pixi run preview        # live-reloading site — RELEASED sessions only
+pixi run draft-preview  # live-reloading, INCLUDING held-back sessions
+pixi run status         # which sessions are published, which are held back
 ```
+
+**Before pushing, run the whole gate.** `pixi run check` on its own is *not*
+what CI runs — a `ruff` error in a script that never touches the rendered site
+will still fail the push:
+
+```bash
+pixi run lint && pixi run test && pixi run site && pixi run lms && pixi run check
+```
+
+`.github/workflows/validate.yml` runs `lint`, `test`, `site`, `lms`, `status`,
+`check-links` and `check-output`, in that order, and stops at the first failure.
 
 ## Layout
 
@@ -72,7 +80,7 @@ Weekly loop:
 pixi run preview   # write, check locally
 pixi run status    # what is currently published
 # release a session: uncomment its lines in the render allowlist in _quarto.yml
-pixi run check     # links + output guards (CI runs these too)
+pixi run lint && pixi run test && pixi run site && pixi run lms && pixi run check
 git push           # validation, then deploy to Cloudflare Pages
 ```
 
@@ -222,6 +230,12 @@ Two checks, both by hand, because a routing mistake here publishes the course:
 
 If the first prompts but the second loads, the worker is not intercepting asset
 requests and the site is effectively public.
+
+**Pick a path that is actually released.** The worker fails closed, so it returns
+401 for *every* path, including ones that do not exist — a 401 on a held-back
+session therefore says nothing about auth *or* about what was published. To check
+what was really deployed, inspect the bytes: `gh run download <run-id>` and list
+the result.
 
 The `<project>.pages.dev` URL keeps working alongside the custom domain and is
 protected by the same worker.
