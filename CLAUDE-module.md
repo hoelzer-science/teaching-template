@@ -89,29 +89,236 @@ allowlist, and anything under `lectures/` or `practicals/`.
 ## Common commands
 
 ```bash
-pixi install       # environment, incl. bioconda CLI tools
-pixi run preview   # live-reloading site
-pixi run test      # practical solutions against their tests
-pixi run check     # links + output guards; what CI runs
-pixi run status    # which sessions are published, which are held back
+pixi install            # environment, incl. bioconda CLI tools
+pixi run preview        # live-reloading site (released sessions only)
+pixi run draft-preview  # live-reloading, INCLUDING unreleased sessions
+pixi run draft          # one-off build of everything, into _draft/
+pixi run lint           # ruff over everything
+pixi run test           # practical solutions against their tests
+pixi run check          # links + output guards
+pixi run status         # which sessions are published, which are held back
 ```
+
+**`pixi run check` is not the CI gate.** `.github/workflows/validate.yml` runs
+**`lint`, `test`, `site`, `lms`, `status`, `check-links` and `check-output`**, in
+that order, stopping at the first failure. Running only `check` misses a `ruff`
+error in a script that never touches the rendered site — which is exactly how a
+push fails. Before pushing:
+
+```bash
+pixi run lint && pixi run test && pixi run site && pixi run lms && pixi run check
+```
+
+**To look at a session that is not released yet, use `pixi run draft-preview`.**
+Do *not* reach for `quarto render lectures/NN-name/slides.qmd`: naming a
+held-back file makes Quarto render it as a **standalone document**, not as part
+of the project, so project-root-absolute includes such as
+`{{< include /shared/partials/… >}}` fail outright and `_course.yml` metadata
+never applies. `_draft/` is gitignored and cannot be published, so drafting is
+safe — but `pixi run status` remains the only answer to what is actually live.
 
 ## Development workflow
 
-1. Edit, `pixi run preview`, `pixi run check`.
+1. Edit, `pixi run preview`, then the full pre-push gate above — not `check`
+   alone.
 2. Push to `main`: CI validates, then deploys.
 3. **Releasing a session is a separate gate** from deploying. Only sessions
    listed in `project.render` in `_quarto.yml` exist on the site at all; adding
    one to the allowlist is what publishes it.
 
+## Authoring content
+
+Distilled from one module taught end to end. Everything here is a rule that cost
+something to learn; the module-specific instances live in that module's own
+`CLAUDE.md`.
+
+**Every `.qmd` that executes Python needs `jupyter: python3` in its front
+matter.** Quarto resolves the kernel itself and does not reliably prefer the
+project environment — it can pick a kernelspec belonging to an unrelated
+virtualenv, and every document importing a third-party package then dies with
+`ModuleNotFoundError`. The pin **does not cascade from `_quarto.yml`**, and
+`QUARTO_PYTHON` does not fix it either: that governs how Quarto *finds* Jupyter,
+not which kernelspec it picks.
+
+**The symptom is much worse than the cause.** The render **aborts** at the first
+failing document, so the output is left **partial** — and `check-links.sh` then
+reports "broken" links that are really files never built, which reads as a
+content error. **If a link check reports far fewer links than usual, suspect an
+aborted render before suspecting the content.** Know your normal count.
+
+**`_freeze/` caches rendered *prose*, not just code output, and can serve a stale
+page.** A one-paragraph edit can be present in the source, absent from the
+output, and **stay absent across full rebuilds**, while other edits to the same
+file in the same minute render fine. The cached text is in
+`_freeze/<doc>/execute-results/html.json` under `result.markdown` — note that a
+top-level `markdown` key also exists and is always empty, which will mislead a
+check written against it. `rm -rf _freeze` fixes it. **A build reporting success
+does not prove your edit is in the output: after editing a `.qmd`, grep the
+rendered HTML for a distinctive phrase you just wrote.**
+
+**An executed block can read a data file from the session's own `data/`
+directory by relative path.** Quarto executes with the *document's* directory as
+the working directory. Prefer that to pasting data into the document: a literal
+copied from a database is a classic silent error, and a file cannot disagree
+with itself.
+
+### Slides, notes and the shape of a session
+
+- **Slides are sparse, notes are complete.** Separate files sharing
+  `shared/partials/` — do not generate one from the other.
+- **They differ in depth, not in order.** The two share a spine: a section that
+  moves in one moves in the other.
+- **A slide should contain at most one `::: {.notes}` block.** Two is almost
+  always a bad split — a slide inserted by anchoring on a line that merely
+  *looks* like the end of one, orphaning everything after it. One `grep` across
+  `lectures/*/slides.qmd` finds every case.
+- **Everything a slide names must already exist at that point in the deck.**
+  Check forward references *within* a session, not only between sessions. Moving
+  content is when this bites, because the prose was correct where it used to be.
+- **Budget length while drafting, not afterwards.** A 90-minute slot holds
+  roughly **30–35 content slides** — about 2 min for an ordinary slide, 3–4 for
+  one carrying a worked example, plus any video and the polls. **Aim at ~25 while
+  figures are still to come**: an incoming drop reliably adds slides, and it is
+  much cheaper to leave room than to cut later. Count with `grep -c '^## '`.
+- **A `.center` figure slide has a text budget, and overflow is silent.** An
+  image at `height="480"` leaves room for a short title and *one* line of body
+  text; two lines need the image at ~430 or less. Speaker notes cost nothing.
+  Overflow is a browser-layout question and cannot be checked from a terminal.
+- **A session that is too long cannot always be split.** The question to ask
+  first is not "where do I cut this in half" but **"does another session already
+  want this?"**
+
+### Things that rot
+
+- **Student-facing text must survive a semester rollover.** No group counts, no
+  week numbers, no dates hard-coded in a `.qmd` — those belong in `_course.yml`
+  or in the LMS. Write "the practical may run in more than one group depending
+  on numbers", not "two groups of twelve".
+- **A session whose CONTENT varies every year should have a page and nothing
+  else** — an `index.qmd`, no slides, no notes. Its content changes annually; its
+  *purpose* does not, and only the purpose is written down. The single varying
+  line lives in `_course.yml`.
+- **A convention that lives in two files decays silently**, because nothing
+  checks that the two agree. Changing or adding one means touching both, and
+  `grep -c` across the session set is the check. **The third place this happens
+  is the design-of-record document**, and it is the easiest to miss because
+  nothing in a session points back at it.
+- **A claim about another session is as checkable as an accession — so grep it,
+  never recall it.** This category *looks* unverifiable but is not: the answer is
+  in the repository.
+- **Renaming a shared vocabulary item has a blast radius that includes prose
+  mirrors of it.** Grep the old label across every session directory *before*
+  renaming. And **when a naming choice has a reason, write the reason next to the
+  name** — it is what stops the choice being re-litigated.
+- **A page that names a path is claiming the reader has that path, and no gate
+  checks it.** Every gate checks the rendered site; an instruction like
+  `cd exercises/NN/starter` is a claim about the *student's machine*. Ask "where
+  does the reader get this from?"
+- **When a step becomes automatic, the sentence that asked for it is part of the
+  change.** Obsolete instructions survive every check, because nothing connects a
+  change in process to the prose describing the old process.
+
+### Figures
+
+- **Every figure needs a caption *and* a `fig-alt`. Exception, and it is
+  silent:** Quarto drops `fig-alt` on a ` ```{mermaid} ` block — the caption
+  renders, the alt text never reaches the output, and nothing warns you. Give
+  mermaid diagrams a text equivalent in visible prose instead. Do not reach for a
+  visually-hidden span: Bootstrap's `.visually-hidden` exists on the website but
+  not in revealjs, and partials are included in both.
+- **Figures live per session.** One moves to `shared/figures/` only when it
+  genuinely appears in more than one — the same rule as `shared/partials/`, where
+  *shared* means *reused by design* rather than *put somewhere central*.
+  **Promoting a GENERATED figure means repointing its generator**, or the next
+  routine regeneration silently recreates the per-session copy and the two drift.
+- **Rerunning a figure generator produces a large but empty diff**, because
+  matplotlib stamps a fresh date and randomises every element id. **Do not
+  regenerate unless a figure actually changed**, and when several were rebuilt
+  together, find out which: rasterise both versions and `magick compare`. The
+  pixel *count* is misleading — new element ids shift anti-aliasing everywhere —
+  so the difference image is what settles it. Revert the ones that only churned.
+- **When a figure's claim depends on which inputs were chosen, assert the claim
+  in the generator**, so a later change to the input set fails loudly instead of
+  quietly contradicting the slide. **Write computed numbers into the label rather
+  than typing them**, for the same reason.
+- **A figure that restates a canonical source should PARSE it, not repeat it.**
+- **Incoming images get optimised on placement**, to WebP at ≤2560 px:
+  `magick <in> -resize 2560x\> -strip -quality 88 <out>.webp`. But **an SVG is
+  not automatically the light option and the rule must not be applied blindly**:
+  check what is *inside* the file with `grep -c base64` and
+  `gzip -9 -c f.svg | wc -c`. A vector SVG full of `<text>` gzips small and
+  rasterising costs crispness for nothing; an SVG that is a wrapper around
+  embedded PNGs rasterises to less than half its gzipped size. **Run the
+  comparison at equal resolution, or it lies.**
+- **A `.pptx` is a zip**, so an incoming deck needs no PowerPoint:
+  `ppt/media/` has the images, `ppt/slides/slideN.xml` the text,
+  `ppt/notesSlides/` the **speaker notes**, and `ppt/slides/_rels/` maps each
+  image to its slide. Worth doing properly rather than asking for exports: a
+  figure arrives *with the argument it was serving*, and the speaker notes say
+  *why* it is there, which is the part that cannot be reconstructed.
+- **Your own figure is not automatically better than a borrowed one — look at it
+  before committing to it.** Generating one is cheap; shipping a bad one is not.
+- **Attribution is at the point of use, best effort** — a source line in the
+  caption when the source is known. **But a licence that names a condition
+  overrides "best effort"**: CC BY and CC BY-SA *require* attribution. And the
+  relaxation is about *bookkeeping*, not about what may be reproduced — it holds
+  only while the site is behind auth and the repository is private.
+
+### Partials
+
+- **Maintainer comments inside partials reach the rendered HTML.** Pandoc passes
+  `<!-- -->` straight through, so anything in a partial's header ships in the
+  page source. Nothing sensitive belongs there. **Worse than it looks:** a Quarto
+  shortcode written *inside* such a comment is still **expanded** before the
+  comment is passed through — so documenting a metadata field in
+  `{{< meta … >}}` syntax prints its actual value into the visible page source.
+  In comments, name fields in prose only.
+- **Use project-root-absolute include paths in partials** (`/shared/…`). Quarto
+  resolves `{{< include >}}` relative to the *including* document, so a relative
+  path breaks as soon as a second document at a different depth includes it.
+
+### Verification
+
+- **Prefer content whose correctness is testable.** Where a claim can be turned
+  into a runnable example, do that.
+- **Identifiers are checkable, so check them rather than recalling them.** One
+  `curl` against a public API settles what memory only guesses.
+- **An external resource that reissues its records needs a PINNED version** if
+  you ship numbers computed from it.
+- **An executed block is evidence about its own input, and nothing more.** A
+  generalisation written beside a green code cell borrows authority from the
+  computation next to it and is an ordinary unverifiable claim. State what the
+  computation computed; flag anything beyond it.
+- **A filter's null result is evidence about the filter as much as about the
+  data.** Plot it before believing a summary statistic about it — a picture costs
+  minutes.
+- **When a second tool is cheap, run it as an independent check** rather than for
+  decoration. Two instruments agreeing is worth far more than one measured
+  number, and the disagreement is where the interesting part is.
+- **A tool that installs is not a tool that works, and package metadata lies.**
+  Establish availability by **solving, per platform** — never by reading a
+  `platforms` field, which reflects only the newest version's builds — and **run
+  the tool end to end before relying on it**. `--version` proves nothing, and the
+  interesting failures appear minutes into a real run.
+- **The version a tool reports is not necessarily the version you installed.**
+  When it matters, read it from the lock file, not from `--version`.
+- **Anything about an interactive web interface cannot be checked from a
+  terminal** and must be tested by hand before it ships. When a claim cannot be
+  executed, mark it as needing a human test rather than writing it as fact.
+
 ## Known constraints
 
-- **Verify auth by hand after any hosting change**, on a **direct asset URL**
-  (e.g. `/lectures/01-alignment/slides.html`), not just the landing page. If the
-  landing page prompts but the asset loads, the worker is not intercepting
-  assets and the course is effectively public. Check the `*.pages.dev` fallback
-  URL too. A **401 means the worker read the credentials**; a 503 means they are
-  unset and it is failing closed.
+- **Verify auth by hand after any hosting change**, on a **direct asset URL that
+  actually exists** — a *released* session's `slides.html`, not a held-back one —
+  and not just the landing page. If the landing page prompts but the asset loads,
+  the worker is not intercepting assets and the course is effectively public.
+  Check the `*.pages.dev` fallback URL too. A **401 means the worker read the
+  credentials**; a 503 means they are unset and it is failing closed.
+- **That check proves auth, and nothing else.** The worker fails closed, so it
+  returns 401 for *every* path, including ones that do not exist. A 401 on a
+  held-back session therefore says nothing about whether it was published — it is
+  what you would see either way. To check what was actually deployed, inspect the
+  bytes CI deployed: `gh run download <run-id>` and list the result.
 - `COURSE_USER` / `COURSE_PASSWORD` are **Cloudflare Pages** environment
   variables read by the worker at runtime — not GitHub secrets. Putting them in
   the wrong place is the most common setup mistake. Preview deployments use a
@@ -129,18 +336,48 @@ pixi run status    # which sessions are published, which are held back
 
 ## Audience
 
-BSc and MSc students in **biotechnology and medical technology** at a university
-of applied sciences. Hands-on and applied; programming is not their main focus.
-Assume a basic computational science lecture and perhaps some Python or R
-touched elsewhere — **assume no command line experience**. Concrete biological
-examples (FASTA files, real sequences) land better than abstract `foo`/`bar`.
+**Replace this section with the real one.** It is the single thing that most
+changes how material is written, and a wrong guess here is expensive — the
+placeholder below is a shape, not an answer.
 
-A Linux/bash crash course is a prerequisite for the practicals. It lives in its
-own public repository and is **linked**, not copied.
+Say who the students are, at what level, and in which programme. Then two things
+that are worth establishing rather than assuming:
+
+- **What they were already taught.** Find the programme's module catalogue and
+  write the mapping down. Students routinely say they do not know something they
+  were in fact taught, so **naming the module is worth doing** — *"you met this
+  in <module>"* both places the material and tells them they already own it.
+  Name modules by **title, never by module code**: titles survive catalogue
+  revisions, and a stale code on a slide is exactly the kind of
+  confidently-wrong detail that costs credibility.
+  **A cross-reference shortens a recap; it never replaces one.** Students forget
+  fast, so the recap stays and gets more compact.
+- **What the programming baseline actually is**, if any practical carries a
+  coding task. This sets the difficulty of everything you write, so take it from
+  the catalogue rather than from impressions.
+
+**Assume no command line experience** unless you have evidence otherwise. A
+Linux/bash crash course is a prerequisite for the practicals; it lives in its own
+public repository and is **linked**, not copied — see "Relation to the other
+repositories" above.
+
+**Concrete examples from the students' own field land better than abstract
+`foo`/`bar`.**
+
+**If the course is taught in one language and written in another, say so and be
+consistent.** Glossing each key term in the other language on first use, in the
+*notes* only, keeps the slides clean and means students never meet a term in the
+exam that they have only ever seen in the other language.
 
 ## Things future sessions should always know
 
-- Read `README.md`, then `NEXT.md`, then the newest file in `docs/sessions/`.
+- Read `README.md`, then the design-of-record document if the module has one,
+  then `NEXT.md`, then the newest file in `docs/sessions/`.
+- **Keep a design-of-record document** — the session plan, the cross-reference
+  against the official module description, and the reasoning behind every
+  deviation. Change it *first* when the plan changes. It is also the third place
+  a two-file convention decays, so grep it for a session's own number before
+  calling that session finished.
 - `NEXT.md` and `docs/sessions/` are gitignored, inherited from the template's
   convention. Here that is habit rather than necessity, since this repo is
   private — but keep it, so one rule holds across all the teaching repos.
