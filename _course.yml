@@ -24,3 +24,20 @@ course:
   # Kept for the record. Not rendered as a link anywhere -- guide.qmd refers to
   # the LMS in plain text, so an unset value here cannot produce a broken link.
   lms-url: "TODO — LMS course URL"
+
+# Live polls at the start of each lecture, wired through
+# shared/partials/poll.qmd. The split matters:
+#
+#   join-url    the PARTICIPATION address students type in. Stable across every
+#               lecture and every semester, so it lives here, paired with
+#               shared/figures/polleverywhere-qr.png.
+#   poll-url    the PRESENTER address, which changes per lecture and per
+#               semester. It is NOT here -- each deck sets its own `poll-url:`
+#               in its YAML front matter, and that one line is the only poll
+#               edit a semester rollover needs.
+#
+# MUST STAY URL-SHAPED even while it is a placeholder. A bare "TODO" renders as
+# a *local* link and fails scripts/check-links.sh, which is the right instinct
+# from the checker and a confusing way to hear about it.
+polls:
+  join-url: "https://pollev.com/TODO-your-participation-address"

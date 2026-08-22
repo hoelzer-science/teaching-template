@@ -17,7 +17,20 @@ format:
     code-line-numbers: true
     width: 1280
     height: 720
+# Presenter URL for this lecture's poll activity. Read by
+# /shared/partials/poll.qmd, which shows it in the SPEAKER NOTES only. It
+# changes per lecture and per semester, so this line is the one thing a rollover
+# has to update -- the stable participation address students use lives in
+# _course.yml as polls.join-url, with its QR beside it.
+#
+# KEEP IT URL-SHAPED even as a placeholder: a bare "TODO" renders as a *local*
+# link and fails scripts/check-links.sh.
+poll-url: "https://www.polleverywhere.com/TODO-this-lecture"
 ---
+
+## Before we start {.smaller}
+
+{{< include /shared/partials/poll.qmd >}}
 
 ## Learning objectives
 
