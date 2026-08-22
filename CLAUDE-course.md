@@ -3,7 +3,7 @@
 <!--
 THIS IS THE MODULE VERSION. In a repo created from teaching-template, run:
 
-    git rm CLAUDE.md && git mv CLAUDE-module.md CLAUDE.md
+    git rm CLAUDE.md && git mv CLAUDE-course.md CLAUDE.md
 
 then replace every <module> / <MODULE> placeholder below. Do this as the first
 commit in a new module, before anything else: the template's own CLAUDE.md

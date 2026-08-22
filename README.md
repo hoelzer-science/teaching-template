@@ -129,7 +129,7 @@ from private repositories.
 **0. First commit in a new module: swap in the module's `CLAUDE.md`.**
 
 ```bash
-git rm CLAUDE.md && git mv CLAUDE-module.md CLAUDE.md
+git rm CLAUDE.md && git mv CLAUDE-course.md CLAUDE.md
 # then replace the <module> / <MODULE> placeholders, and fill in _course.yml
 ```
 

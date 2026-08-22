@@ -12,7 +12,7 @@
 > Fix it before doing anything else:
 >
 > ```bash
-> git rm CLAUDE.md && git mv CLAUDE-module.md CLAUDE.md
+> git rm CLAUDE.md && git mv CLAUDE-course.md CLAUDE.md
 > # then replace the <module> / <MODULE> placeholders
 > ```
 >
