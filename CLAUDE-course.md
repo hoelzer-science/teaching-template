@@ -202,6 +202,18 @@ safe — but `pixi run status` remains the only answer to what is actually live.
    listed in `project.render` in `_quarto.yml` exist on the site at all; adding
    one to the allowlist is what publishes it.
 
+   **It is three edits, though, and only the first is called release:** the
+   allowlist, the **navbar** in the same file, and the link in `schedule.qmd`.
+   Miss the last two and the session is live and reachable only by guessing its
+   URL — with nothing failing, because `check-links.sh` rejects links that are
+   *broken* and never notices links that are *absent*. `pixi run status` has a
+   **REACHABLE** column for exactly this.
+
+   The **first practical** is the awkward one: the Practicals menu is removed
+   from the navbar while it would be empty, because Quarto rejects a menu with
+   no entries, so releasing P01 means re-creating the whole menu rather than
+   adding one line.
+
 ## Authoring content
 
 Distilled from one module taught end to end. Everything here is a rule that cost
