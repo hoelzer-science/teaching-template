@@ -13,6 +13,12 @@
 # External (http/https) links are not checked -- that needs network access and
 # belongs in a scheduled job, not the build.
 #
+# <script> blocks are stripped before scanning. Minified JavaScript contains
+# things that look exactly like local hrefs -- mermaid's bundle builds strings
+# such as href="'+t+'" -- and the LMS build inlines every library, so a single
+# diagram in a document was enough to fail the whole check on a link that does
+# not exist. Only the document's own markup should be scanned.
+#
 set -euo pipefail
 
 dir="${1:-_site}"
@@ -52,7 +58,8 @@ while IFS= read -r page; do
       echo "BROKEN: $page -> $link"
       broken=$((broken + 1))
     fi
-  done < <(grep -ohE 'href="[^":]*"' "$page" 2>/dev/null \
+  done < <(perl -0777 -pe 's{<script\b.*?</script>}{}gis' "$page" 2>/dev/null \
+             | grep -ohE 'href="[^":]*"' 2>/dev/null \
              | sed 's/^href="//; s/"$//' \
              | grep -vE '^(#|mailto:|data:|javascript:)' || true)
 
