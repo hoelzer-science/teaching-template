@@ -2,18 +2,39 @@
 title: "Schedule"
 ---
 
-{{< meta course.semester >}}, starting {{< meta course.start-date >}}.
+{{< meta course.semester >}}. First lecture {{< meta course.start-date >}}.
 
 Linked sessions are available now. Unlinked ones are listed so you can see
 what is coming; they go online in the week they are taught.
 
-| Week | Lecture | Practical |
-|------|---------|-----------|
-| 1 | [Sequence Alignment](lectures/01-alignment/index.qmd) | [Pairwise Alignment](practicals/01-alignment/index.qmd) |
-| 2 | Sequence Databases | Database Searching |
-| 3 | TODO | TODO |
+## Lectures
 
-: Course schedule {tbl-colwidths="[10,45,45]"}
+| Lecture | Topic |
+|------|---------|
+| 1 | [Sequence Alignment](lectures/01-alignment/index.qmd) |
+| 2 | Sequence Databases |
+| 3 | TODO |
+
+: Lecture schedule {tbl-colwidths="[12,88]"}
+
+## Practical
+
+One or two sentences on what the practical *is* — if it is a continuous project
+rather than a series of isolated exercises, say so here, because it changes how
+students read the table below.
+
+Dates are announced in {{< meta course.lms >}}.
+
+| Session | Content |
+|------|---------|
+| 1 | [Pairwise Alignment](practicals/01-alignment/index.qmd) |
+| 2 | TODO |
+
+: Practical sessions {tbl-colwidths="[12,88]"}
+
+The practical starts a few weeks after the lecture, once it has covered the
+groundwork, and may run in more than one group depending on numbers. Your dates
+are in {{< meta course.lms >}}.
 
 ::: {.callout-note}
 Dates come from `_course.yml`. Rolling the course into a new semester means
@@ -21,9 +42,32 @@ editing that one file, not this table.
 :::
 
 <!--
+TWO TABLES, NOT ONE, and this is the part worth keeping if the page is
+redesigned. A single table with a Week column and one lecture beside one
+practical implies the two run in step. They do not: the practical usually starts
+several weeks later, may run for alternating cohorts, and often has fewer
+sessions than the lecture has topics. Pairing them in one row states a
+relationship that is false for most weeks of most courses.
+
+THE FIRST COLUMN IS THE SESSION NUMBER, NOT THE CALENDAR WEEK. They are not the
+same -- timetable week 1 frequently carries no lecture -- and calendar weeks both
+go stale every year and contradict the timetable.
+
 MAINTENANCE: only link a session once it is in the render allowlist in
 _quarto.yml. Linking a held-back session produces a 404, which
-scripts/check-links.sh will fail on in CI. Run ./scripts/release.sh status
-to see what is currently live.
--->
+scripts/check-links.sh will fail on in CI. Run ./scripts/release.sh status to see
+what is currently live.
 
+Titles here mirror COURSE-STRUCTURE.md, which is the design of record and carries
+the reasoning. Change that file first.
+
+THIS TABLE GOES STALE SILENTLY, and it did once on a published page: a
+renumbering renamed one lecture and swapped two others, the reference sweep that
+followed covered the sessions themselves and missed this file, and the live site
+showed the old order for three days. WHEN SESSION NUMBERING CHANGES, GREP THE
+TITLES HERE TOO.
+
+DELIBERATELY ABSENT: cohort counts, group sizes and dates. Those change every
+semester and belong in _course.yml or in the LMS -- see CLAUDE.md, "Things that
+rot".
+-->

@@ -11,6 +11,9 @@ course:
   audience: "BSc Semester N"
   code: "MODULE.CODE"
   semester: "Winter 20XX/XX"
+  # The date of the FIRST LECTURE, not the first week of term -- schedule.qmd
+  # renders it as "First lecture <date>". Timetable week 1 frequently carries no
+  # lecture, which is also why that page numbers sessions rather than weeks.
   start-date: "20XX-10-01"
   sws-lecture: 2
   sws-practical: 2
