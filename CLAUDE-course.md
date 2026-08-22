@@ -21,6 +21,82 @@ changes. Current working state lives in `NEXT.md`; session history in
 > the infrastructure — layout, Cloudflare walkthrough, release allowlist and
 > eight hard-won gotchas. Read it first; this file does not repeat it.
 
+## Starting a new course
+
+**Read this first if the repository is still mostly placeholders.** It is the
+order that worked once, end to end, and the reasoning for it.
+
+### 0. Set up the scaffolding, before writing anything
+
+```bash
+cp COURSE-STRUCTURE.template.md COURSE-STRUCTURE.md   # the design of record
+cp NEXT.template.md NEXT.md                            # current state, gitignored
+```
+
+Fill in `_course.yml`. Delete `instructor/team-repos/` if the practical has no
+teams. Then follow "Setting up hosting for a module" in `README.md`.
+
+### 1. Settle the frame before settling the content
+
+In this order, because each answer constrains the next:
+
+1. **How binding is the module description?** Usually: outcomes and the formal
+   frame are, the content list is not. **Get it in writing** — if the
+   flexibility was granted verbally, the audit trail for the whole design ends
+   at "somebody said so".
+2. **What does the examination actually test?** Definitions, or executing a
+   procedure by hand, or both. This decides how worked examples are *sized*, and
+   it is much cheaper to know now than to rewrite twelve sessions later.
+3. **What have the students already been taught?** Find the programme's module
+   catalogue and map it. This is not optional politeness: it changes what needs
+   teaching from scratch and what needs a two-minute recap.
+4. **What is the programming baseline**, if any practical carries code.
+
+Write the answers into `COURSE-STRUCTURE.md` as you get them. **They are the
+design of record from that moment on.**
+
+### 2. Draft ahead of review, and expect the review to be the rate limiter
+
+The division of labour that works: **the instructor decides what is taught and
+vouches for every domain claim; the session drafts, structures and builds.** In
+practice it is a loop — a skeleton for slides and notes, then correction against
+domain knowledge, then figures.
+
+**Draft first and let it be corrected, rather than waiting for complete input.**
+And the queue should run with drafting well ahead of review, because the review
+loop is slower than the drafting: several rounds per session is normal.
+
+**Material from the instructor arrives through `instructor/incoming/<session>/`,
+with a `notes.md`.** Structure that file the same way every time:
+
+1. **what is already verified and needs no check** — this is not padding, it is
+   what keeps the question list short and shows exactly where mechanical
+   checking stops;
+2. the numbered questions that genuinely need a human;
+3. figures wanted;
+4. length.
+
+Answers come back inline; the next session applies them and appends a placement
+log to the same file. **Create the drop folder and its `notes.md` as the last
+step of drafting** — do not wait to be asked.
+
+### 3. Sessions before practicals, and practicals in dependency order
+
+Write the lectures first, then the practical units against what the *earlier*
+cohort has actually seen. The setup unit — environment, version control, data —
+is written **last** even though it is taught **first**: it is the one that
+depends on everything else existing.
+
+### 4. Release is a separate gate, and stays closed by default
+
+Content being finished months early and published week by week is exactly what
+the allowlist in `_quarto.yml` is for. Nothing is published by writing it.
+
+### The order in one line
+
+> frame → design of record → sessions, drafting ahead of review → practicals in
+> dependency order → setup unit last → release week by week
+
 ## Project overview
 
 The <MODULE> module: <lecture and practical, audience>. A Quarto site deployed
@@ -477,8 +553,12 @@ exam that they have only ever seen in the other language.
 
 ## Things future sessions should always know
 
-- Read `README.md`, then the design-of-record document if the module has one,
-  then `NEXT.md`, then the newest file in `docs/sessions/`.
+- Read `README.md`, then `COURSE-STRUCTURE.md`, then `NEXT.md`, then the newest
+  file in `docs/sessions/`. If the first three are still templates, start at
+  "Starting a new course" above.
+- **The scaffolds:** `COURSE-STRUCTURE.template.md`, `NEXT.template.md` and
+  `docs/SESSION-TEMPLATE.md`. Copy, do not read-and-improvise — the headings are
+  the parts that were learned.
 - **Keep a design-of-record document** — the session plan, the cross-reference
   against the official module description, and the reasoning behind every
   deviation. Change it *first* when the plan changes. It is also the third place

@@ -24,6 +24,25 @@ pixi run lint && pixi run test && pixi run site && pixi run lms && pixi run chec
 `.github/workflows/validate.yml` runs `lint`, `test`, `site`, `lms`, `status`,
 `check-links` and `check-output`, in that order, and stops at the first failure.
 
+## Starting a new course from this template
+
+"Use this template" on GitHub, then:
+
+```bash
+git rm CLAUDE.md && git mv CLAUDE-course.md CLAUDE.md   # the module's own
+cp COURSE-STRUCTURE.template.md COURSE-STRUCTURE.md     # the design of record
+cp NEXT.template.md NEXT.md                             # working state, gitignored
+```
+
+Fill in `_course.yml`, delete `instructor/team-repos/` if the practical has no
+teams, and follow *Setting up hosting for a module* below.
+
+**Then read `CLAUDE.md`, "Starting a new course".** It carries the order that
+worked — settle the frame before the content, draft ahead of review, write the
+setup practical last even though it is taught first — and the reasoning for
+each. The three `*.template.md` files are scaffolds whose *headings* are the
+part that was learned; copy them rather than improvising.
+
 ## Layout
 
 ```
