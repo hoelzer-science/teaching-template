@@ -1,0 +1,50 @@
+<!--
+Shared partial: how the Compute layer of a practical unit is scheduled.
+
+Included at the top of every unit's Compute section. IDENTICAL WORDING
+EVERYWHERE ON PURPOSE -- students meet it once per unit and it must read as one
+rule rather than as a different rule each session. That is the whole reason it
+is a partial and not a paragraph.
+
+WHY IT EXISTS. Measured on a real module: the opening demonstration plus the Do
+and Interrogate layers fill a three-hour session, leaving under an hour, while
+six to eight small functions with tests is 80-100 minutes for students at this
+level. Every unit came out 20-30 minutes over, from the same cause. Saying
+plainly that the Compute layer continues outside the session costs about two
+hours across a whole practical, against the ~120 h of self-study a 6 ECTS module
+budgets against ~60 h of contact.
+
+It is also the better order pedagogically, which is why it is framed as a design
+choice and not an apology: each Compute layer is built around one trap, the trap
+is where having someone to ask matters, and the tests are a specification precise
+enough to work against alone afterwards.
+
+THE HEADING OF THE COMPUTE SECTION SHOULD CARRY THE TIMING TOO --
+"## Layer 2 — Compute (start here, finish before the next session)" -- because a
+student reading top to bottom reads headings, not callouts.
+
+PATH CONVENTION: see /shared/partials/poll.qmd. Project-root-absolute paths only.
+-->
+
+::: {.callout-note title="Start this here, finish it before the next session"}
+You are not expected to complete this during the session, and the session is not
+timed on the assumption that you will.
+
+**Start it here**, while there is someone to ask. Each of these exercises is built
+around one place where the obvious implementation is quietly wrong, and that is the
+part worth having help for.
+
+**Finish it before the next session.** The tests are a complete specification —
+they say exactly what each function must do — so you can work against them on your
+own once you are past the awkward part. The next unit assumes this one's code
+exists.
+
+If you get stuck for more than about twenty minutes on the same thing, that is an
+obstacle. Write it in the log and bring it.
+:::
+
+**Read Layer 3 before you leave, even though you will answer it later.** Some of
+its questions are answered with numbers this layer produces, so they cannot all be
+finished in the room either — but they tell you **what to look at while the data
+is still in front of you**, and some of what they ask about is much harder to
+recover once the session is over.

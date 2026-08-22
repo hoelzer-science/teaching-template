@@ -2,14 +2,52 @@
 title: "Practical 01 — Pairwise Alignment"
 ---
 
-## Goal
+<!--
+EXAMPLE UNIT. This is the reference for how a practical unit is built -- the
+three layers, the artefact list, the obstacles section, the closing reading.
+Copy the shape, replace the content.
 
-Implement Needleman–Wunsch yourself, then check it against Biopython.
+The three layers are the point, and they are what keeps a tool-driven practical
+anchored to something verifiable:
+
+  Do          run the tools on the data          checked by: the artefacts exist
+  Compute     a small programming task            checked by: `pixi run test`
+  Interrogate a question that needs LOOKING       checked by: the write-up
+
+A unit with only a Do layer teaches button-pressing. A unit with only a Compute
+layer is a programming course. The Interrogate layer is what makes the other two
+add up to a result, and it NEEDS OBSTACLES TO EXIST -- so design at least one
+place per unit where the obvious approach is ambiguous, fails, or depends on a
+parameter choice. A unit that runs smoothly gives students nothing to report.
+
+See CLAUDE-course.md, "How a practical unit is built", for the full model.
+-->
+
+## Materials
+
+- [Slides](slides.qmd)
+
+---
+
+Today you implement the algorithm the lecture derived, and then find out what it
+does that the lecture did not mention.
+
+## What this assumes
+
+| From | You need |
+|---|---|
+| **L1** | why similarity suggests homology; the alignment recurrence |
+
+<!--
+STATE THE PREREQUISITES BY SESSION NUMBER, NEVER BY TIME. If the practical runs
+for two cohorts on alternating weeks, "last week's lecture" is true for one of
+them and false for the other. Write against the state of the EARLIER cohort --
+the minimum, never the average.
+-->
 
 ## Setup
 
-The whole environment — Python, Biopython and the command-line tools — is
-pinned in `pixi.toml`. Install [pixi](https://pixi.sh), then:
+The environment is pinned in `pixi.toml`. Install [pixi](https://pixi.sh), then:
 
 ```bash
 pixi install
@@ -19,25 +57,102 @@ pixi shell
 ::: {.callout-warning}
 ## Windows
 
-Several of the tools we use are distributed through bioconda, which does not
-build for Windows. Work inside **WSL2**, not native Windows.
+Several of these tools come from bioconda, which does not build for Windows.
+Work inside **WSL2**, not native Windows.
 :::
 
-## Tasks
+## Layer 1 — Do
 
-1. Open `starter/alignment.py` and implement `score()`.
-2. Implement `align()` using the recurrence from the lecture.
-3. Run the tests until they pass:
+Run the reference implementation on the example data and look at what comes out.
 
-   ```bash
-   cd practicals/01-alignment/starter
-   pytest test_alignment.py -v
-   ```
+```bash
+cd practicals/01-alignment
+head data/sequences.fasta
+```
 
-4. Compare your result against Biopython's `PairwiseAligner`. Do you get the
-   same score? The same alignment? If the alignments differ but the scores
-   match, explain why that is not a bug.
+Two sequences. Before computing anything, guess: where do you expect the gaps?
+Write the guess down — you will compare against it.
 
-## Handing in
+## Layer 2 — Compute (start here, finish before the next session)
 
-TODO — define the submission route via Moodle.
+{{< include /shared/partials/compute-layer.qmd >}}
+
+```bash
+cd practicals/01-alignment/starter
+pytest test_alignment.py -v
+```
+
+Everything fails to begin with. Work down the file; the tests are the
+specification.
+
+| | |
+|---|---|
+| `score` | one cell of the matrix |
+| `align` | the recurrence, and the traceback |
+
+::: {.callout-important}
+## One of these has an obvious implementation that is wrong
+
+The traceback is the one the tests are built around. Two alignments can have the
+same score and different gap placement, and only one of them is what the
+recurrence actually produced.
+:::
+
+## Layer 3 — Interrogate
+
+Answer these in your write-up. They are the ones you will be asked about.
+
+1. **Compare your alignment against Biopython's `PairwiseAligner`.** Same score?
+   Same alignment? **If the scores match but the alignments differ, that is not a
+   bug** — explain why.
+2. **Change the gap penalty and run it again.** At what value does the alignment
+   change character? What does that tell you about reporting an alignment without
+   reporting its parameters?
+3. **Where did your guess from Layer 1 turn out to be wrong**, and why?
+
+::: {.callout-note}
+## There is no correct setting
+
+Only a defensible one. What is not defensible is choosing without looking.
+:::
+
+## Obstacles
+
+Some of these you will hit. **Write them down as they happen**, not afterwards
+from memory — a record of what went wrong is much harder to reconstruct at the
+end of a semester than to keep as you go.
+
+- The traceback runs off the edge of the matrix, and the error names a line that
+  is not where the mistake is.
+- Two alignments with the same score look like a failing test.
+
+## What to commit
+
+| | |
+|---|---|
+| `practicals/01-alignment/starter/alignment.py` | the file you filled in, tests passing |
+| your write-up | the three answers above, and the obstacles you hit |
+
+<!--
+NAME THE ARTEFACTS EXPLICITLY. "Look at the repository" needs something concrete
+to look at, and a full path removes the ambiguity between the module you write
+and the test file beside it.
+-->
+
+## Tools and further reading
+
+Every tool has a manual, and every one of them was somebody's research project.
+**Read the manual before you trust a default** — that habit is worth more than
+anything else in this session. The paper says what the tool was built to do,
+which is often narrower than what people use it for.
+
+- **Biopython** — [docs](https://biopython.org/wiki/Documentation).
+  Cock *et al.* (2009), *Bioinformatics*.
+  [doi:10.1093/bioinformatics/btp163](https://doi.org/10.1093/bioinformatics/btp163)
+
+<!--
+MANUAL FIRST, PAPER SECOND, and say when a tool has no paper -- widely used
+tools are not always published, and saying so is itself instructive. Use DOIs
+rather than journal URLs: check-links.sh verifies only LOCAL links, so a rotted
+URL will not be caught by CI.
+-->

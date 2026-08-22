@@ -1,0 +1,113 @@
+---
+title: "Pairwise Alignment"
+subtitle: "Practical 01"
+format:
+  revealjs:
+    # NOTE: theme paths are resolved relative to THIS document, unlike
+    # `{{< include >}}` paths, which are resolved from the project root.
+    theme: [default, ../../styles/slides.scss]
+    slide-number: true
+    chalkboard: true
+    incremental: false
+    code-line-numbers: true
+    width: 1280
+    height: 720
+---
+
+<!--
+EXAMPLE DECK, and the shape is the point: FIVE SLIDES, THEN THE TERMINAL.
+
+  1  where we are        the course roadmap, with today's step marked
+  2  today's question    in the case study's terms, not the tool's
+  3  what you produce    the artefacts, named
+  4  what this assumes   by SESSION NUMBER, never by time
+  5  logistics           how to work, and that obstacles are recorded
+
+About five minutes. The rest of the ~30-45 minute introduction is a LIVE
+DEMONSTRATION -- terminal, viewer, copy-paste commands, look at the output.
+That is the right medium for it and slides would get in the way.
+
+DO NOT GROW THIS DECK. If something needs saying that is not one of these five
+things, it belongs in index.qmd, which students read, or in the demonstration.
+
+The one defensible exception is the FIRST unit of a practical, which may carry
+two more: what earns the credit, and how the three layers work. Both are said
+once for the whole semester rather than for that session -- and the assessment
+in particular must be stated in the FIRST session, because a record of obstacles
+and a screenshot of something interesting cannot be reconstructed at the end.
+
+A slide should contain AT MOST ONE `::: {.notes}` block. Two is almost always a
+slide accidentally split in half.
+-->
+
+## Where we are
+
+<!--
+Put the course's own roadmap here, with today's step highlighted. A generated
+strip works better than a diagram: it can be given an exact height so it sits
+under the title without dominating it, and it can carry alt text -- Quarto
+SILENTLY DROPS `fig-alt` on a ```{mermaid} block.
+-->
+
+The pipeline, one step at a time. Today: the first one.
+
+::: {.fragment}
+You have two sequences. Everything later depends on lining them up correctly.
+:::
+
+## Today's question
+
+::: {.r-fit-text}
+Are these two sequences related?
+:::
+
+::: {.fragment}
+And the harder one behind it: **how would you know if the answer were wrong?**
+:::
+
+::: {.notes}
+Frame it as the case study asks it, not as the tool asks it. The tool always
+returns an alignment; the question is whether to believe it.
+:::
+
+## What you will produce
+
+By the end of today:
+
+- **Your own implementation**, tests passing
+- **A comparison** against an established library
+- **A short write-up**: what you chose, and what it cost you
+
+::: {.fragment}
+The write-up is the part that outlives the session.
+:::
+
+## What this assumes
+
+| From | You need |
+|---|---|
+| **L1** | why similarity suggests homology; the alignment recurrence |
+
+::: {.fragment}
+If any of that is hazy, say so now rather than at half past.
+:::
+
+::: {.notes}
+Deliberately by session number, never by time -- if the practical runs for two
+cohorts on alternating weeks, "last week's lecture" is false for one of them.
+:::
+
+## Logistics
+
+- Everything runs inside `pixi shell`
+- Windows: **WSL2**, not native Windows
+- Commit as you go, not at the end
+
+::: {.fragment}
+**Write down what goes wrong.** Obstacles are part of what you report, and today
+reliably produces some.
+:::
+
+::: {.notes}
+Now stop presenting and go to the terminal.
+:::
