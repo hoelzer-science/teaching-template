@@ -105,6 +105,18 @@ in the first practical — do not worry about it before then.
 | Announcements and deadlines | {{< meta course.lms >}} |
 | Handing in practical work | {{< meta course.lms >}} |
 
+## How this material was made
+
+This course material is drafted and built with the help of AI coding agents,
+and I think you should know that rather than have to guess it. They draft,
+structure and build; I decide what is taught and check every factual claim
+against the primary source before it reaches you.
+
+If you find a mistake anyway, tell me — that is genuinely useful, and checking a
+confident-looking answer is a habit worth having in any case. The full account,
+including what the agents are deliberately not used for, is at
+[teaching.hoelzer.science/infrastructure](https://teaching.hoelzer.science/infrastructure.html#ai-in-the-build).
+
 ## Getting help
 
 Ask questions in class or in the practical — if one person is stuck, usually
