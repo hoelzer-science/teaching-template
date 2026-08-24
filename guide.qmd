@@ -108,5 +108,9 @@ in the first practical — do not worry about it before then.
 ## Getting help
 
 Ask questions in class or in the practical — if one person is stuck, usually
-several are. Outside class, reach me at
-[{{< meta course.contact >}}](mailto:{{< meta course.contact >}}).
+several are.
+
+Outside class, reach me through {{< meta course.lms >}} or by email at
+[{{< meta course.contact >}}](mailto:{{< meta course.contact >}}). If it is a
+question others might have too, {{< meta course.lms >}} is the better of the
+two — the answer is then visible to everyone instead of to one person.
