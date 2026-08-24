@@ -1,4 +1,10 @@
-# <session> — retrospective
+---
+name: Session retrospective
+about: Debrief a lecture or practical right after teaching it -- what worked, what didn't, what changes next time.
+title: "Retrospective: "
+labels: retrospective
+assignees: ''
+---
 
 Semester:
 Date taught:
@@ -28,6 +34,8 @@ Date taught:
 - [ ]
 
 ## Practical
+
+(Delete this section for a lecture.)
 
 - Environment problems encountered:
 - Tasks that took much longer than expected:

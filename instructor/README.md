@@ -15,10 +15,13 @@ means:
 
 ## Contents
 
-- `semester-notes/` — post-session retrospectives, one file per session per
-  semester. Written immediately after teaching, while it is still fresh.
-  Over several years this is the most valuable directory in the repository:
-  it is the only place that records what actually happened in the room.
+- **Session retrospectives** are GitHub issues, not a directory. File one
+  immediately after teaching a lecture or practical, from the *Session
+  retrospective* template (`.github/ISSUE_TEMPLATE/session-retrospective.md`,
+  labelled `retrospective`) — while it is still fresh. Over several years this
+  is the most valuable record the repository produces: it is the only place
+  that records what actually happened in the room, and unlike a file it stays
+  open, closeable and pickable-up (by you or an agent) until it is acted on.
 - `lesson-plans/` — timing and delivery notes.
 - `grading/` — rubrics.
 

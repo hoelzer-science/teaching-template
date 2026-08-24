@@ -36,6 +36,16 @@ cp NEXT.template.md NEXT.md                            # current state, gitignor
 Fill in `_course.yml`. Delete `instructor/team-repos/` if the practical has no
 teams. Then follow "Setting up hosting for a module" in `README.md`.
 
+**"Use this template" copies files, not labels.** The `retrospective` label
+that `.github/ISSUE_TEMPLATE/session-retrospective.md` applies has to be
+created once per new repository:
+
+```bash
+gh label create retrospective \
+  --description "Post-lecture or post-practical debrief, from the session-retrospective issue template" \
+  --color "5319E7"
+```
+
 ### 1. Settle the frame before settling the content
 
 In this order, because each answer constrains the next:
@@ -567,7 +577,13 @@ exam that they have only ever seen in the other language.
 
 - Read `README.md`, then `COURSE-STRUCTURE.md`, then `NEXT.md`, then the newest
   file in `docs/sessions/`. If the first three are still templates, start at
-  "Starting a new course" above.
+  "Starting a new course" above. **Then check `gh issue list`** for open
+  `retrospective`-labelled issues — the instructor files one per lecture or
+  practical, right after teaching it, from the
+  `.github/ISSUE_TEMPLATE/session-retrospective.md` template. These are
+  concrete, closeable, session-specific action items in a way `NEXT.md` prose
+  is not: pick one up the way you would a bug report, fix it, and close the
+  issue rather than folding it back into `NEXT.md`.
 - **The scaffolds:** `COURSE-STRUCTURE.template.md`, `NEXT.template.md` and
   `docs/SESSION-TEMPLATE.md`. Copy, do not read-and-improvise — the headings are
   the parts that were learned.
