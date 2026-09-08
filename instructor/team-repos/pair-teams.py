@@ -37,8 +37,18 @@ from who actually turned up, so this script is TOLD the groups rather than
 computing them -- and it takes only the teams present, which is what keeps the
 pairing inside one group when a session runs twice.
 
-READ, NOT WRITE. The grant is `pull`. A reviewer must not be able to push to the
-repository they are reviewing, and read is enough to open an issue.
+READ, NOT WRITE, AND `pull` IS ENOUGH -- confirmed 2026-09-08 from GitHub's own
+role table rather than by experiment, which is why no second account was needed.
+The **Read** role lists "Open issues" and "Close issues they opened themselves"
+among its permissions, so a reviewer can file the review and close it afterwards
+while being unable to push. Triage would also work and is *more* than is wanted:
+it adds closing and reopening ANYONE's issues, which a reviewing team has no
+business doing on the repository it is reviewing.
+
+REVOKING ALSO DELETES ANY FORK the reviewer made: "If you remove a person's
+access to a private repository, any of their forks of that private repository are
+deleted." Local clones are retained, which is correct and expected -- the
+reviewer cloned it legitimately during the session.
 
 REVOKE IS SELF-HEALING and does not need to remember the pairing. Given the
 roster, it removes every collaborator on a team's repository who is not a member
@@ -196,7 +206,7 @@ def main() -> int:
     parser.add_argument("--revoke", action="store_true",
                         help="remove every collaborator who is not on their own team")
     parser.add_argument("--permission", default="pull",
-                        help="pull (read) is enough to open an issue; change only if it is not")
+                        help="pull (read) is enough to open an issue -- confirmed against GitHub's role table")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
