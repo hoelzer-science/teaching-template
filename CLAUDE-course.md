@@ -315,6 +315,39 @@ with itself.
 - **When a step becomes automatic, the sentence that asked for it is part of the
   change.** Obsolete instructions survive every check, because nothing connects a
   change in process to the prose describing the old process.
+- **A check has its own precondition, so replacing an assertion with a check does
+  not discharge the obligation.** A page asserting *"the database is already
+  installed"* is a claim about a room nobody has decided about yet. Replacing it
+  with `echo "$SOME_DB"` *feels* like moving the claim onto the reader's machine
+  where it can be tested — and it does not, unless something puts the value there.
+  An environment variable that no page and no environment ever exports is exactly
+  as broken as a path no reader has, and the check can then only ever reach its
+  own failure branch. **Ask "where does the reader get this from?" of the check's
+  INPUT, not its output.**
+- **The same family covers a PERMISSION, and that form hides best of all.** A
+  session can ask students to do something the access model forbids — read each
+  other's repositories, say — and the page and the model then contradict each
+  other with every gate green, because the claim is about a third-party service
+  rather than about the site. Worse, the contradiction is often already *written
+  down* and read as handled: a maintainer comment saying *"this needs access
+  arranged beforehand"* names the precondition exactly and then stops. **Writing
+  down what a page needs is not arranging it, and a TODO phrased as a fact is
+  invisible.**
+- **A correction is a claim, and it needs the same check as the thing it
+  corrects.** The trap is specific and worth naming, because writing the
+  correction is the moment of maximum confidence: **while deleting a claim that
+  was made on reasoning, you are the most likely to make one.** Nothing about
+  having caught an error transfers to what you put in its place — and a reviewer
+  approving a proposed replacement is not evidence for it, since they can only
+  rule on what they are shown. **Measure the replacement before proposing it, not
+  after it is accepted.**
+- **Saying something for the first time is a state change too, and a disclosure's
+  blast radius is every claim that was resting on the silence.** Ask two
+  questions, and only the first is mechanical: *what prose repeats the fact I just
+  changed?* — grep it — and *what does a reader now get to infer that they could
+  not before?* The second finds sentences that share no vocabulary with the change
+  at all, so no grep reaches them, and those are exactly the ones that survive
+  every check.
 
 ### Figures
 
@@ -426,6 +459,32 @@ with itself.
 - **Anything about an interactive web interface cannot be checked from a
   terminal** and must be tested by hand before it ships. When a claim cannot be
   executed, mark it as needing a human test rather than writing it as fact.
+  - **But a documented permission or capability table is a LOOKUP, not a GUI
+    test.** *"It concerns a web service, so a human must test it"* is one category
+    too coarse. A *behaviour* needs testing; a published role or permission table
+    is checkable the same way an accession is, and the vendor's own documentation
+    settles it in one fetch. A constraint — *"there is only one account to test
+    with"* — is a reason to look it up, not a reason to defer it.
+- **Grepping the rendered HTML gives a FALSE ABSENCE inside a code block**, and
+  the failure looks exactly like the bug it is checking for. Pandoc's syntax
+  highlighting wraps every token of a code block in its own `<span>`, so a command
+  and its subcommand are **not contiguous bytes** in the output even though they
+  are one line in the source. Prose in the same batch matches, which makes it
+  worse: you get "most edits present, the code ones missing", which reads
+  precisely like a stale cache. **Strip the tags before grepping** —
+  `re.sub(r'<[^>]+>', '', html)`, plus unescaping the entities — whenever what you
+  are looking for is a command, a flag or a path. Prose can be grepped raw.
+  **Replace the tags with the empty string, not with a space**: a space rejoins
+  the tokens as `git   clone` and reproduces the very false absence the strip
+  exists to prevent.
+- **The gate is VACUOUS for a held-back session, and it passes anyway.** Only
+  sessions on the render allowlist reach the built site, so editing a held-back
+  one means every gate runs green having exercised **none** of your work — the
+  link and output checks inspected a site your change is not in. Nothing warns
+  you, because nothing is wrong. **To verify a change to a held-back session,
+  build the draft profile and grep the rendered HTML.** Same family as the
+  page-names-a-path rule above, arriving by a different route: every gate checks
+  the site, so a claim about anything else is unguarded by construction.
 
 ## How a practical unit is built
 
@@ -595,5 +654,20 @@ exam that they have only ever seen in the other language.
 - `NEXT.md` and `docs/sessions/` are gitignored, inherited from the template's
   convention. Here that is habit rather than necessity, since this repo is
   private — but keep it, so one rule holds across all the teaching repos.
+- **A rule whose reason has expired is still obeyed by whoever reads it next.**
+  So **when you write a rule down, write its reason beside it; when the reason
+  changes, the rule is part of what changes.** Two corollaries worth having:
+  where a rule survives its original premise for a *different* reason, say which
+  — otherwise the next reader re-derives the wrong one. And a rule can outlive
+  the argument it was given for: a decision that was recorded as resting on one
+  ground may still be right on another, and the honest move is to correct the
+  record rather than the decision.
+- **`guide.qmd` tells students the material is built with AI coding agents, and
+  that page is coupled to how the material is actually produced.** It states that
+  agents draft, structure and build while the lecturer decides what is taught and
+  checks every factual claim against the primary source. **If that stops being
+  true, the page is part of the change** — a stale accuracy claim on a public page
+  is worse than no claim. The full account is linked rather than copied, so it
+  lives in one place and each course points at it.
 - `gh` is authenticated as `hoelzer`; `wrangler` via OAuth. Cloudflare account
   ID `6398bee0e2141168cd3fccf8cfbfe6ee`.
