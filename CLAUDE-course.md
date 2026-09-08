@@ -36,6 +36,15 @@ cp NEXT.template.md NEXT.md                            # current state, gitignor
 Fill in `_course.yml`. Delete `instructor/team-repos/` if the practical has no
 teams. Then follow "Setting up hosting for a module" in `README.md`.
 
+**And check `guide.qmd`'s "Where to find what" table against how your course
+actually assesses.** It ships a sensible default — *"Handing in practical work →
+the LMS"* — which is **wrong for any course that uses team repositories**, where
+there is nothing separate to hand in: the repository *is* the record, and the
+assessment is it plus the final presentation. That row and the intro paragraph
+above it both say it, so they are a two-file convention inside one file, and the
+originating module got the table right while leaving the intro wrong. Nothing
+checks either: it is a claim about your assessment model, not about the site.
+
 **"Use this template" copies files, not labels.** The `retrospective` label
 that `.github/ISSUE_TEMPLATE/session-retrospective.md` applies has to be
 created once per new repository:
