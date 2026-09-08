@@ -20,20 +20,52 @@ The model, from one module that ran it:
   looked and found none* — and saying so in the template is worth more than
   saying it in a lecture.
 
-## The two scripts
+## The three scripts
 
 | | |
 |---|---|
 | `build-team-template.py` | writes the template repository from this one, so it is a **build artefact** and nothing is authored there |
 | `create-team-repos.py` | a roster becomes one private repository per team, personalised, with the students invited |
+| `pair-teams.py` | opens read access **between** teams for one session, and revokes it — only needed if your practical has a peer review |
 
-Both are idempotent and both have a read-only `--dry-run`.
+All three are idempotent and all three have a read-only `--dry-run`.
 
 ```bash
 ./instructor/team-repos/build-team-template.py ~/git/<module>-team-template --dry-run
 ./instructor/team-repos/create-team-repos.py ~/roster.tsv \
     --term ws2627 --prefix <module> --template <org>/<module>-team-template --dry-run
+./instructor/team-repos/pair-teams.py --term ws2627 --prefix <module> \
+    --roster ~/roster.tsv --grant team-01,team-02 team-03,team-04 --dry-run
 ```
+
+### If your practical has a cross-review, read this before writing it
+
+**The access model above forbids it, and no CI gate will tell you.** A session
+that asks each team to read another team's repository and file an issue on it is
+a perfectly good exercise — and outside collaborators reach exactly one
+repository, so students cannot open the other repo at all. The page and the
+access model then contradict each other with every gate green, because the claim
+is about *GitHub permissions* rather than about the rendered site. In the module
+this came from, two designs of record disagreed for two weeks before anyone
+noticed.
+
+`pair-teams.py --grant` opens it for the session and `--revoke` closes it again.
+Three things about it are deliberate:
+
+- **Groups of two or three, not pairs.** Three is the answer to an odd number of
+  teams: each is reviewed by the two others, so nobody is left out.
+- **`pull`, not `push`.** A reviewer must not be able to write to what they
+  review, and read is enough to open an issue.
+- **`--revoke` is self-healing.** It removes every collaborator who is not on
+  that team, so it does not need to remember the pairing, is safe to run twice,
+  and verifies afterwards that none is left.
+
+**Do not reach for making the repositories public instead.** Changing visibility
+needs `admin`, so it is your action on every repository rather than the students'
+own, and a blanket flip is not opt-in. Whether they go public *afterwards*, at
+each team's choice, is a separate and much better question — a finished analysis
+is a real portfolio piece, and for a cohort that does not otherwise write code in
+public it may be the most useful thing they leave with.
 
 **Adapt `personalise()` in `create-team-repos.py` to your own template.** The
 pattern to keep is in its docstring: **verify each edit by looking for what
