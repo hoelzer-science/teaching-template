@@ -1,9 +1,18 @@
 # Style guide for student-facing text
 
-**Who reads this material:** Bachelor students who speak German as their first
-language and read English as a second language. They read the material in
-English, but they are taught and examined in German. They must understand the
-biology and the methods. They must not also have to decode the English.
+**Who reads this material:** Bachelor and Master students who speak German as
+their first language and read English as a second language. They read the
+material in English, but they are taught and examined in German. They must
+understand the subject and its methods. They must not also have to decode the
+English.
+
+The rules are the same for Bachelor and Master courses. A Master course can
+assume more subject knowledge, but not better English.
+
+**About the examples:** most examples below come from bioinformatics, the first
+course written with this guide. The rules do not depend on the subject. For a
+course on digital health or AI in medicine, the technical terms and the examples
+change; the rules stay the same.
 
 **What this guide covers:** lecture notes, slides, session pages, practicals and
 course pages. Speaker notes get a light pass only (see *Speaker notes* below).
@@ -66,9 +75,10 @@ loosely to explanations.
 5. **Never use a foreign phrase, a scientific word or a jargon word if you can
    think of an everyday English equivalent.**
    **This rule has one exception, and it is important: the technical terms of
-   the subject stay.** Students must learn *alignment*, *coverage*, *contig*,
-   *reverse complement* — they are the content, they appear in the exam, and
-   they appear in every tool. Keep them, define them on first use, and give the
+   the subject stay.** Students must learn them — in bioinformatics, for example,
+   *alignment*, *coverage*, *contig* and *reverse complement*. They are the
+   content, they appear in the exam, and they appear in the tools and the
+   literature. Keep them, define them on first use, and give the
    German term (see section 3). What goes is jargon that is *not* the subject:
    *i.e.*, *e.g.*, *cf.*, *vice versa*, *a priori*, *per se*, and
    computer-science or academic slang the reader was never taught.
@@ -109,8 +119,18 @@ explanations.
   or the next one. After that, use the term without explanation.
 - **Give the German term in parentheses on first use**, in the notes:
   *sequencing (dt. Sequenzierung)*. Slides stay without these.
-- **Refer to other sessions by name and number**, not by position: *"Lecture 4
-  (Quality control)"*, not *"as we saw above"* or *"later"*.
+- **Refer to other sessions by number and full title, and say what they
+  covered.** Students do not remember which number was which topic, so a bare
+  number is almost as unclear as *"as we saw above"* or *"later"*.
+
+  | Not | But |
+  |---|---|
+  | as we saw earlier | as Lecture 4 (Sequence Quality Control) showed |
+  | see L4 and L10 | Lecture 4 (Sequence Quality Control) explains quality scores; Lecture 10 (Phylogenetics) explains trees |
+  | later in the course | Lecture 9 (Genome Annotation) covers this |
+
+  On slides, where space is short, a number with a short title is enough:
+  *"L4 (Quality control)"*.
 - **Do not refer back with a pronoun across a paragraph break.** Repeat the
   noun.
 - **A slide may be in telegraphic style** — fragments and short phrases are
