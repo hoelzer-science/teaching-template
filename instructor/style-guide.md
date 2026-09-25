@@ -168,8 +168,9 @@ A language edit changes **how** something is said, never **what** is said.
   meaning, and headings that other pages link to (heading text makes the anchor).
 - **Keep the order of sections.** Slides and notes share the same order; an edit
   in one must not break that.
-- **Keep the marker "do this one by hand"** and every statement about what is
-  or is not examinable.
+- **Keep every marker that tells students to work an example by hand** (for
+  example *"do this one by hand"*), and every statement about what is or is not
+  examinable.
 - **If a simpler sentence would say something slightly different, do not
   choose.** Mark it for the lecturer to decide. Rewording is exactly the place
   where a correct claim can become a wrong one.

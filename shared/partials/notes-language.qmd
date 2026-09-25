@@ -1,10 +1,10 @@
 <!--
-Shared partial: the opening of every lecture's notes, from the second lecture on.
+Shared partial: the opening of every lecture's notes.
 
 Included directly after the front matter of each notes.qmd. The wording is
-identical everywhere on purpose. The first lecture keeps its own, longer version,
-which also says WHY the written material is in English; students meet that
-explanation once, and this short form after it.
+identical everywhere on purpose. A module may give its first lecture a longer
+version instead, which also says WHY the written material is in English;
+students then meet that explanation once, and this short form after it.
 
 ONE FIXED EXAMPLE, not one per lecture (Martin, 2026-09-25). The per-lecture
 example term would need a value in every notes file, and a missing or misspelled
