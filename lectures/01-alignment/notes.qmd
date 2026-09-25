@@ -3,18 +3,17 @@ title: "Sequence Alignment — Notes"
 subtitle: "Lecture 01"
 ---
 
-These notes are the reference version of the session. The slides are
-deliberately sparser; everything stated in passing during the lecture is
-written out here.
+{{< include /shared/partials/notes-language.qmd >}}
 
 ## Why align sequences?
 
-Sequence comparison underlies most of bioinformatics: annotation transfer,
-phylogeny, variant calling, database search. The reasoning runs from an
-observation to an inference:
+Sequence comparison (dt. *Sequenzvergleich*) underlies most of bioinformatics:
+annotation transfer, phylogeny, variant calling, database search. The reasoning
+runs from an observation to an inference:
 
-> Two sequences are **similar** (measurable). They may therefore be
-> **homologous**, i.e. descended from a common ancestor (inferred).
+> Two sequences are **similar** (dt. *ähnlich*; measurable). They may therefore
+> be **homologous** (dt. *homolog*), i.e. descended from a common ancestor
+> (inferred).
 
 The distinction matters. Similarity is a property of the strings in front of
 you. Homology is a historical claim, and a claim that similarity supports but
@@ -27,7 +26,7 @@ being pedantic about it early.
 {{< include /shared/partials/scoring-scheme.qmd >}}
 
 The scheme in @tbl-scoring is deliberately crude. Real work uses substitution
-matrices (PAM, BLOSUM) whose entries are log-odds ratios derived from observed
+matrices (dt. *Substitutionsmatrizen*; PAM, BLOSUM) whose entries are log-odds ratios derived from observed
 substitution frequencies in curated alignments, so that chemically conservative
 substitutions cost less than radical ones.
 
@@ -44,9 +43,9 @@ $$
 
 ## Needleman–Wunsch
 
-The recurrence given on the slides is a dynamic programming formulation: the
-optimal alignment of two prefixes is built from optimal alignments of shorter
-prefixes. Two things are worth stressing:
+The recurrence given on the slides is a dynamic programming (dt. *dynamische
+Programmierung*) formulation: the optimal alignment of two prefixes is built from
+optimal alignments of shorter prefixes. Two things are worth stressing:
 
 1. **Initialisation encodes the algorithm's intent.** For global alignment the
    first row and column are filled with cumulative gap penalties, because a
