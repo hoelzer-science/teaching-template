@@ -1,0 +1,26 @@
+<!--
+Shared partial: the opening of every lecture's notes, from the second lecture on.
+
+Included directly after the front matter of each notes.qmd. The wording is
+identical everywhere on purpose. The first lecture keeps its own, longer version,
+which also says WHY the written material is in English; students meet that
+explanation once, and this short form after it.
+
+ONE FIXED EXAMPLE, not one per lecture (Martin, 2026-09-25). The per-lecture
+example term would need a value in every notes file, and a missing or misspelled
+one prints a placeholder that no check catches. A consequence to remember: the
+example here is NOT the German gloss of any lecture's own terms. Each notes file
+must gloss its key terms at their first use in the body, as the style guide asks.
+-->
+
+These notes are the complete written version of the session. The slides are
+shorter. Everything that is said in the lecture but not shown on a slide is
+written out here.
+
+::: {.callout-note title="Language"}
+The written material is in English. The lecture, the practical and the
+**exam** are in German. The notes give each key term with its German equivalent
+in parentheses when the term first appears, for example: sequencing (dt.
+*Sequenzierung*). Many German terms in this field are the same as the English
+ones, and the notes say so where this is the case.
+:::
