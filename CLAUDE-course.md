@@ -641,6 +641,46 @@ consistent.** Glossing each key term in the other language on first use, in the
 *notes* only, keeps the slides clean and means students never meet a term in the
 exam that they have only ever seen in the other language.
 
+**Every student-facing text follows `instructor/style-guide.md`**: Orwell's six
+rules, plus the parts of ASD-STE100 Simplified Technical English that fit
+teaching. It is written for students who read English as a second language and
+are taught and examined in German, because every module built from this
+template is. The reason is the reader: an idiom, a filler word or a 40-word
+sentence costs a second-language reader effort that belongs to the subject.
+Write new material that way from the start. **Name every session in full** —
+*Lecture 4 (Sequence Quality Control)*, not *L4* — because students do not
+remember which number was which topic. A language edit changes the wording,
+never the claim: if a simpler sentence would say something slightly different,
+flag it instead of choosing. The guide is kept free of any one module's content,
+so that one text serves every module; change it upstream and cherry-pick.
+
+**Rewriting every sentence is also the best proofreading the material will
+get.** A full plain-English pass over one module found content defects in almost
+every unit, all of which had passed every gate and every domain check:
+cross-references to the wrong session, *"real data"* for simulated data, a slide
+contradicting its own table, a footnote pointing students at a file they cannot
+see. You cannot restate a sentence without reading what it claims, and nothing
+else in the workflow forces that. **So treat a language pass as a review, and put
+every content finding in the PR as a question** — a wording edit that quietly
+fixes a claim is exactly what this file warns about.
+
+**A quotation of another session is a copy, and it goes stale when that session
+is reworded.** The same pass reworded early lectures first, and four later
+lectures that quoted them word for word no longer matched. Nothing checks that a
+quotation still agrees with its source, so grep the source session for the quoted
+words before trusting one — and after rewording a session, grep the others for
+quotations of it.
+
+**Notes open with `shared/partials/notes-language.qmd`**: the notes' opening
+paragraph and the *Language* callout, with **one fixed example term**, not one
+per lecture (a per-file value prints a placeholder, unchecked, whenever it is
+missing). Because the example is fixed, it glosses none of the lecture's own
+terms. **Each notes file must gloss its key terms at their first use in the
+body** — moving one module onto the partial found six lectures whose callout
+example had been the only German gloss of their key term. A module may give its
+first lecture a longer version that also says *why* the material is in
+English.
+
 ## Things future sessions should always know
 
 - Read `README.md`, then `COURSE-STRUCTURE.md`, then `NEXT.md`, then the newest

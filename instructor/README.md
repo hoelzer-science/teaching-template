@@ -22,6 +22,8 @@ means:
   is the most valuable record the repository produces: it is the only place
   that records what actually happened in the room, and unlike a file it stays
   open, closeable and pickable-up (by you or an agent) until it is acted on.
+- `style-guide.md` — how every student-facing text is written. CLAUDE.md,
+  *Audience*, says why and how it is applied.
 - `lesson-plans/` — timing and delivery notes.
 - `grading/` — rubrics.
 
